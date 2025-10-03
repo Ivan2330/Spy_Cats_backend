@@ -1,0 +1,131 @@
+{
+  "info": {
+    "_postman_id": "b9f1f2b4-0d8a-4c2a-9f21-spy-cats-final",
+    "name": "Spy Cats API — Final (Cats, Missions)",
+    "description": "Final Postman collection matching FastAPI routes. Includes Cats CRUD and Missions with inline Targets (create/assign/update). No standalone Targets endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "cat_id", "value": "1" },
+    { "key": "mission_id", "value": "1" },
+    { "key": "target_id", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Cats",
+      "item": [
+        {
+          "name": "Create Cat",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/cats", "host": ["{{base_url}}"], "path": ["cats"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Whiskers\",\n  \"years_experience\": 3,\n  \"breed\": \"Siamese\",\n  \"salary\": 2000\n}"
+            },
+            "description": "Create a cat. Breed is validated via TheCatAPI; 422 if invalid."
+          }
+        },
+        {
+          "name": "List Cats",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/cats", "host": ["{{base_url}}"], "path": ["cats"] },
+            "description": "Retrieve all cats."
+          }
+        },
+        {
+          "name": "Get Cat by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/cats/{{cat_id}}", "host": ["{{base_url}}"], "path": ["cats", "{{cat_id}}"] },
+            "description": "Retrieve a single cat by ID. 404 if not found."
+          }
+        },
+        {
+          "name": "Update Cat Salary (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/cats/{{cat_id}}", "host": ["{{base_url}}"], "path": ["cats", "{{cat_id}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"salary\": 2500\n}"
+            },
+            "description": "Update only the salary field. 404 if cat not found."
+          }
+        },
+        {
+          "name": "Delete Cat",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{base_url}}/cats/{{cat_id}}", "host": ["{{base_url}}"], "path": ["cats", "{{cat_id}}"] },
+            "description": "Delete a cat by ID. 204 on success; no error if already absent."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Missions",
+      "item": [
+        {
+          "name": "Create Mission (with Targets)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/missions", "host": ["{{base_url}}"], "path": ["missions"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"targets\": [\n    {\n      \"name\": \"Mr. Johnson\",\n      \"country\": \"France\",\n      \"notes\": \"Observed entering embassy\",\n      \"complete\": false\n    },\n    {\n      \"name\": \"Agent X\",\n      \"country\": \"Germany\",\n      \"notes\": \"Frequent cafe visits\",\n      \"complete\": false\n    }\n  ]\n}"
+            },
+            "description": "Create a mission. Mission is created with complete=false. Targets are created inline."
+          }
+        },
+        {
+          "name": "List Missions",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/missions", "host": ["{{base_url}}"], "path": ["missions"] },
+            "description": "Retrieve all missions with eager-loaded targets and cat."
+          }
+        },
+        {
+          "name": "Get Mission by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{base_url}}/missions/{{mission_id}}", "host": ["{{base_url}}"], "path": ["missions", "{{mission_id}}"] },
+            "description": "Retrieve mission by ID (includes targets and cat). 404 if not found."
+          }
+        },
+        {
+          "name": "Assign Cat to Mission",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/missions/{{mission_id}}/assign", "host": ["{{base_url}}"], "path": ["missions", "{{mission_id}}", "assign"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cat_id\": 1\n}"
+            },
+            "description": "Assign a cat to the mission. 404 if mission/cat not found; 409 if cat already has an active mission."
+          }
+        },
+        {
+          "name": "Update Target inside Mission",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/missions/{{mission_id}}/targets/{{target_id}}", "host": ["{{base_url}}"], "path": ["missions", "{{mission_id}}", "targets", "{{target_id}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Updated: target spotted near Eiffel Tower\",\n  \"complete\": true\n}"
+            },
+            "description": "Update a target's notes and/or completion. 404 if not found or not in mission; 409 if mission completed or notes frozen after target completion. If all targets become complete, the mission becomes complete."
+          }
+        }
+      ]
+    }
+  ]
+}
