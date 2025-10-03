@@ -1,6 +1,7 @@
 ---
 
 # Spy Cat Agency — Backend (FastAPI)
+<img width="1807" height="891" alt="image" src="https://github.com/user-attachments/assets/ab1631be-41a7-4f32-b0e4-f4c9f10507b0" />
 
 ## Overview
 
@@ -126,6 +127,12 @@ uvicorn app.main:app --reload
 API available at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 Docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 Healthcheck: `GET /health` → `{"status":"ok"}`
+
+---
+
+## Postman Collection
+You can download and import the Postman collection here:  
+[SpyCatAgency.postman_collection.json](./postman/SpyCatAgency.postman_collection.json)
 
 ---
 
