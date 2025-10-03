@@ -131,8 +131,12 @@ Healthcheck: `GET /health` → `{"status":"ok"}`
 ---
 
 ## Postman Collection
-You can download and import the Postman collection here:  
-[SpyCatAgency.postman_collection.json](Spy_Cats_backend/backend/postman/SpyCatAgency.postman_collection.json)
+
+- View on GitHub:  
+  [SpyCatAgency.postman_collection.json](backend/postman/SpyCatAgency.postman_collection.json)
+
+- Import directly into Postman (raw link):  
+  [Download Collection (raw)](https://raw.githubusercontent.com/Ivan2330/Spy_Cats_backend/main/backend/postman/SpyCatAgency.postman_collection.json)
 
 ---
 
